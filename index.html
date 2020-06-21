@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Laboratorio 03</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  
+  <link rel="stylesheet" href="css/stylesheet.css">
+  <link rel="stylesheet" href="js/lib/leaflet/leaflet.css">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="/images/152x152.png">
+
+  <meta name="theme-color" content="white"/>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="PWA Esempio">
+  <meta name="msapplication-TileImage" content="images/144x144.png">
+  <meta name="msapplication-TileColor" content="#cc194b">
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="js/lib/leaflet/leaflet.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+  <script src="js/mymap.js" ></script>
+  <script src="js/button.js" ></script>
+  <script src="js/account.js"></script>
+
+</head>
+<body class="fullscreen">
+  <div class="">
+    <div id="controls" class="wrapper-on-map">
+      <input type="checkbox" class="toggler" />
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>    
+      </div>
+
+      <div id="menu" class="menu-to-open">
+        <h1 class="title">TecWeb 03</h1>
+        <div class="lat-long center-text">
+          <strong>Posizione corrente: </strong><p id="latlng-text"></p>
+        </div>
+    
+        <div class="last-positions center-text">
+          <p><strong>Ultime posizioni: </strong></p>
+          <ul class="list-positions">
+          </ul>
+        </div>
+    
+        <div class="avg-positions center-text">
+          <p><strong>Media: </strong></p>
+          <p id="avg-positions"></p>
+        </div>
+        <div class="container form-group col-md-11" >
+          <p class="center-text" ><strong>Aggiungi Popup o clicca sulla mappa! </strong></p>
+          <input class="form-control" type="text" id="latitude" required placeholder="Inserisci Latitudine"/><br>
+          <input class="form-control" type="text" id="longitude" required placeholder="Inserisci Longitudine"/><br>
+          <input class="form-control" type="text" id="text" placeholder="Inserisci Etichetta"/><br>
+          
+          <div class="errors-wrapper">
+            <p class="error"></p>
+          </div>
+          <div class="success-wrapper">
+            <p class="success"></p>
+          </div>
+          <!-- <input type=button class="submit" id="tastoaggiungi" value=Aggiungi /> -->
+  
+          <div id="button-wrapper">
+            <a class="submit" id="addMarkerButton">Aggiungi</a>
+            <div class="loader-wrapper">
+              <span class="loader yellow"></span>
+              <span class="loader pink"></span>
+            </div>
+            <span class="loader orange"></span>
+  
+            <!-- CHECK SPUNTA -->
+            <div class="check-wrapper">
+              <svg version="1.1"width="65px" height="38px" viewBox="0 0 64.5 37.4">
+                <polyline class="check" points="5,13 21.8,32.4 59.5,5 "/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrapper-on-map login-button">
+      <input type="checkbox" class="toggler" />
+      <div class="hamburger">
+        <svg class="bi bi-person" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M13 14s1 0 1-1-1-4-6-4-6 3-6 4 1 1 1 1h10zm-9.995-.944v-.002.002zM3.022 13h9.956a.274.274 0 0 0 .014-.002l.008-.002c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664a1.05 1.05 0 0 0 .022.004zm9.974.056v-.002.002zM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+        </svg>
+      </div>
+
+      <div class="menu-to-open">
+        <div class="login-wrapper not-logged-in active">
+          <h3 class="title">Effettua il login</h3>
+          <p class="description">Inserisci le credenziali per accedere all'ateneo e registra le tue misure!</p>  
+          
+          <div class="form-wrapper form-group">
+            <input type="text" name="username" id="username" class="form-control" placeholder="Username">
+            <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+
+            <button class="btn btn-primary login-btn">Login!</button>
+          </div>
+        </div>
+        <div class="login-wrapper logged-in">
+          <h3 class="title">Sei già autenticato</h3>
+
+          <button class="btn btn-danger logout-btn">Logout</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="map-wrapper">
+      <div id="map"></div>
+    </div>
+
+    <div class="toast-wrapper">
+      
+    </div>
+
+    <div class="wrapper-on-map measures-list">
+      <input type="checkbox" class="toggler">
+      <div class="hamburger">
+        <svg class="bi bi-map" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M15.817.613A.5.5 0 0 1 16 1v13a.5.5 0 0 1-.402.49l-5 1a.502.502 0 0 1-.196 0L5.5 14.51l-4.902.98A.5.5 0 0 1 0 15V2a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0l4.902.98 4.902-.98a.5.5 0 0 1 .415.103zM10 2.41l-4-.8v11.98l4 .8V2.41zm1 11.98l4-.8V1.61l-4 .8v11.98zm-6-.8V1.61l-4 .8v11.98l4-.8z"/>
+        </svg>        
+      </div>
+
+      <div class="menu-to-open">
+        <h4 class="title">Lista misure</h4>
+        <ul class="measures-list-container">
+
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal marker-message" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Crea misura</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-wrapper">
+              <div class="form-group">
+                <input type="text" name="marker_message" id="marker_message" class="form-control">
+                <input type="hidden" name="marker_latitude" id="marker_latitude" class="form-control">
+                <input type="hidden" name="marker_longitude" id="marker_longitude" class="form-control">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary save-marker">Salva</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal edit-marker-message" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modifica etichetta</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-wrapper">
+              <div class="form-group">
+                <input type="hidden" name="marker_index" id="edit_marker_id">
+                <input type="text" name="edit_marker_message" id="edit_marker_message" class="form-control">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary edit-marker-btn">Salva</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+</html>
